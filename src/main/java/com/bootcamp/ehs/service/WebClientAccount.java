@@ -20,9 +20,12 @@ public class WebClientAccount {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebClientCustomer.class);
 
+    @Qualifier("gatewayServiceUrl")
+    private final WebClient webClient;
+
     public Mono<ProductDTO> findProductById(String id) {
         LOGGER.info("En findAccountById: el id= "+ id);
-        return accountWebClient.get()
+        return webClient.get()
                 .uri("/account/{id}", id)
                 .retrieve()
                 .bodyToMono(ProductDTO.class);
@@ -30,7 +33,7 @@ public class WebClientAccount {
 
     public Flux<AccountDTO> findAccountsByCustomer(String customerId){
         LOGGER.info("En findAccountByCustomerId: el id= "+ customerId);
-        return accountWebClient.get()
+        return webClient.get()
                 .uri("/api/account/bycustomer/{customerId}", customerId)
                 .retrieve()
                 .bodyToFlux(AccountDTO.class);

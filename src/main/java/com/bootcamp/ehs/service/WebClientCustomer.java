@@ -19,12 +19,17 @@ public class WebClientCustomer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebClientCustomer.class);
 
+    @Qualifier("gatewayServiceUrl")
+    private final WebClient webClient;
+
     public Mono<CustomerInfoDTO> findCustomerById(String id) {
         LOGGER.info("En findCustomerById: el id= "+ id);
-        return customerWebClient.get()
+        return webClient.get()
                 .uri("/api/customer/list/{id}", id)
                 .retrieve()
                 .bodyToMono(CustomerInfoDTO.class);
     }
+
+
 
 }

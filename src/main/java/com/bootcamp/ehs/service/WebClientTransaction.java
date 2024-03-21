@@ -1,32 +1,33 @@
 package com.bootcamp.ehs.service;
 
-import com.bootcamp.ehs.DTO.CustomerDTO;
 import com.bootcamp.ehs.DTO.ProductDTO;
+import com.bootcamp.ehs.DTO.TransactionDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class WebClientProduct {
+public class WebClientTransaction {
 
-    @Qualifier("productWebClient")
-    private final WebClient productWebClient;
+    @Qualifier("transactionWebClient")
+    private final WebClient transactionWebClient;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebClientCustomer.class);
 
     @Qualifier("gatewayServiceUrl")
     private final WebClient webClient;
 
-    public Mono<ProductDTO> findProductById(String id) {
-        LOGGER.info("En findProductById: el id= "+ id);
+    public Flux<TransactionDTO> findTransactionByAccountId(String accountId){
+        LOGGER.info("WebClientTransaction : En findTransactionByAccountId : el id = "+ accountId);
         return webClient.get()
-                .uri("/api/product/list/{id}", id)
+                .uri("/api/transaction/account/{accountId}", accountId)
                 .retrieve()
-                .bodyToMono(ProductDTO.class);
+                .bodyToFlux(TransactionDTO.class);
     }
 }

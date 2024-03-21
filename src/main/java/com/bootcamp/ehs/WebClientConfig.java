@@ -8,6 +8,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
+    @Value("${gateway.service.url}")
+    private String gatewayServiceUrl;
+
+
     @Value("${customers.service.url}")
     private String customerServiceUrl;
 
@@ -50,11 +54,18 @@ public class WebClientConfig {
                 .baseUrl(bankServiceUrl)
                 .build();
     }
-
     @Bean
     public WebClient accountWebClient(){
         return WebClient.builder()
                 .baseUrl(accountServiceUrl)
                 .build();
     }
+
+    @Bean
+    public WebClient webClient(){
+        return WebClient.builder()
+                .baseUrl(gatewayServiceUrl)
+                .build();
+    }
+
 }

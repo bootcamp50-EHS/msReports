@@ -1,10 +1,7 @@
 spring:
   application:
-    name: reports-service
+    name: report-service
   cloud:
     config:
       uri: http://localhost:8888
 #      uri: http://config-server:8888
-server:
-  port: 8086
-  #${PORT:0}
