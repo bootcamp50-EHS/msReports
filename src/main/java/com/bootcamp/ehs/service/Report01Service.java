@@ -14,6 +14,7 @@ public class Report01Service {
     private final WebClientCustomer clientService;
     private final WebClientProduct productService;
     private final WebClientAccount accountService;
+    private final WebClientCredit creditService;
 
 
     public Mono<CustomerDTO> getReportAccountByCustomer(String clienteId) {
@@ -40,6 +41,18 @@ public class Report01Service {
                         .collectList()
                         .doOnNext(cliente::setAccountList)
                         .thenReturn(cliente))
+                .flatMap(cliente -> creditService.findCreditsByCustomer(clienteId)
+                        .map(credito -> {
+                            DetailCreditDTO detailCredit = new DetailCreditDTO();
+                            detailCredit.setProductName(credito.getCreditType());
+                            detailCredit.setAmount(credito.getAmount());
+                            return detailCredit;
+                        })
+                        .collectList()
+                        .doOnNext(cliente::setCreditList)
+                        .thenReturn(cliente)
+
+                )
                 .onErrorResume(IllegalArgumentException.class, ex -> Mono.empty());
     }
 }

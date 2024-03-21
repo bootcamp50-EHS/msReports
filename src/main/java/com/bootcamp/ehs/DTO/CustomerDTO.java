@@ -15,6 +15,7 @@ public abstract class CustomerDTO {
     private String docNumber;
     private String typeCustomer;
     private List<DetailAccountDTO> accountList;
+    private List<DetailCreditDTO> creditList;
 
     public CustomerDTO(CustomerInfoDTO customerInfoDTO){
         this.id = customerInfoDTO.getId();
